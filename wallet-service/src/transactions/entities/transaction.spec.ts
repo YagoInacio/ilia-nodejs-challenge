@@ -1,11 +1,11 @@
-import { Transaction } from './transaction';
+import { Transaction, TransactionType } from './transaction';
 
 describe('Transaction', () => {
   it('should be able to create a transaction', () => {
     const transaction = new Transaction({
       userId: 'USER_TEST',
       amount: 123,
-      type: 'CREDIT',
+      type: TransactionType.CREDIT,
     });
 
     expect(transaction).toBeTruthy();
@@ -16,7 +16,7 @@ describe('Transaction', () => {
       new Transaction({
         userId: 'USER_TEST',
         amount: 123,
-        type: 'TYPE' as 'CREDIT' | 'DEBIT',
+        type: 'TYPE' as TransactionType,
       });
     }).toThrow('Transaction type not valid');
   });
@@ -26,7 +26,7 @@ describe('Transaction', () => {
       new Transaction({
         userId: 'USER_TEST',
         amount: 12.3,
-        type: 'DEBIT',
+        type: TransactionType.DEBIT,
       });
     }).toThrow('Amount not valid: must be integer');
   });

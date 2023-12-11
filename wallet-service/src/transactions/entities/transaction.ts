@@ -1,10 +1,15 @@
 import { randomUUID } from 'node:crypto';
 import { Replace } from 'src/helpers/Replace';
 
+export enum TransactionType {
+  CREDIT = 'CREDIT',
+  DEBIT = 'DEBIT',
+}
+
 export interface TransactionProps {
   userId: string;
   amount: number;
-  type: 'CREDIT' | 'DEBIT';
+  type: TransactionType;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -55,7 +60,7 @@ export class Transaction {
     return this.props.amount;
   }
 
-  public set type(value: 'CREDIT' | 'DEBIT') {
+  public set type(value: TransactionType) {
     const isValid = this.validateTransactionType(value);
 
     if (!isValid) {
@@ -66,7 +71,7 @@ export class Transaction {
     this.update();
   }
 
-  public get type(): 'CREDIT' | 'DEBIT' {
+  public get type(): TransactionType {
     return this.props.type;
   }
 
