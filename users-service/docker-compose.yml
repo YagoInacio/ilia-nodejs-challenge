@@ -1,34 +1,23 @@
 version: "3.9"
 
 services:
-  wallet-app:
-    build: .
-    container_name: wallet-app
-    depends_on:
-      - database-wallet
+  database-users:
+    image: mongo
+    container_name: database-users
     ports:
-      - 3001:3001
-    env_file:
-      - ./.env
-    networks:
-      - ilia-network
-
-  database-wallet:
-    image: postgres
-    container_name: database-wallet
-    ports:
-      - 5432:5432
+      - 27017:27017
     env_file:
       - ./.env
     volumes:
-      - pgdata:/data/postgres
+      - mongodbdata:/data/db
     networks:
       - ilia-network
 
 volumes:
-  pgdata:
+  mongodbdata:
     driver: local
 
 networks: 
   ilia-network:
-    driver: bridge
+    name: wallet-service_ilia-network
+    external: true
