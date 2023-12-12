@@ -17,21 +17,23 @@ export class InMemoryTransactionsRepository implements TransactionsRepository {
     return transaction;
   }
 
-  async listAll(): Promise<Transaction[]> {
-    return this.transactions;
-  }
+  async listAll(filters: {
+    userId?: string;
+    type?: TransactionType;
+  }): Promise<Transaction[]> {
+    let transactions = this.transactions;
 
-  async listByUserId(
-    userId: string,
-    type?: TransactionType,
-  ): Promise<Transaction[]> {
-    if (type) {
-      return this.transactions.filter(
-        (item) => item.userId === userId && item.type === type,
+    if (filters.userId) {
+      transactions = transactions.filter(
+        (item) => item.userId === filters.userId,
       );
     }
 
-    return this.transactions.filter((item) => item.userId === userId);
+    if (filters.type) {
+      transactions = transactions.filter((item) => item.type === filters.type);
+    }
+
+    return transactions;
   }
 
   async getBalance(userId?: string): Promise<number> {

@@ -23,10 +23,10 @@ export class ListTransactions {
       // TODO: exception handling
       throw new Error('Invalid Type');
     }
-    const transactions = await this.transactionsRepository.listByUserId(
+    const transactions = await this.transactionsRepository.listAll({
       userId,
       type,
-    );
+    });
 
     return { transactions };
   }

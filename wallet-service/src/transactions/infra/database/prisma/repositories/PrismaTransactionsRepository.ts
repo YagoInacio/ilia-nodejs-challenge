@@ -15,19 +15,21 @@ export class PrismaTransactionsRepository implements TransactionsRepository {
     throw new Error('Method not implemented.');
   }
 
-  async listAll(): Promise<Transaction[]> {
-    throw new Error('Method not implemented.');
-  }
+  async listAll(filters: {
+    userId?: string;
+    type?: TransactionType;
+  }): Promise<Transaction[]> {
+    const where = {};
 
-  async listByUserId(
-    userId: string,
-    type?: TransactionType,
-  ): Promise<Transaction[]> {
+    if (filters.userId) {
+      Object.assign(where, { userId: filters.userId });
+    }
+    if (filters.type) {
+      Object.assign(where, { type: filters.type });
+    }
+
     const transactions = await this.prisma.transaction.findMany({
-      where: {
-        userId,
-        type,
-      },
+      where,
     });
 
     return transactions.map(PrismaTransactionMapper.toDomain);

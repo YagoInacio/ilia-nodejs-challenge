@@ -4,7 +4,7 @@ import {
 } from '@transactions/entities/transaction';
 
 export interface ListTransactionsInputDTO {
-  userId: string;
+  userId?: string;
   type?: TransactionType;
 }
 

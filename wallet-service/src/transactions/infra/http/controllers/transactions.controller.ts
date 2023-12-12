@@ -47,7 +47,8 @@ export class TransactionsController {
   }
 
   @Get()
-  @ApiQuery({ name: 'type', enum: TransactionType })
+  @ApiQuery({ name: 'type', enum: TransactionType, required: false })
+  @ApiQuery({ name: 'userId', required: false })
   @ApiOkResponse({
     description: 'OK',
     type: [TransactionViewModelSchema],
