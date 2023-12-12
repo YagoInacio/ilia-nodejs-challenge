@@ -1,8 +1,8 @@
 import {
   Transaction,
   TransactionType,
-} from 'src/transactions/entities/transaction';
-import { TransactionsRepository } from 'src/transactions/repositories/TransactionsRepository';
+} from '@transactions/entities/transaction';
+import { TransactionsRepository } from '@transactions/repositories/TransactionsRepository';
 
 export class InMemoryTransactionsRepository implements TransactionsRepository {
   public transactions: Transaction[] = [];
