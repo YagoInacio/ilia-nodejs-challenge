@@ -1,0 +1,34 @@
+version: "3.9"
+
+services:
+  wallet-app:
+    build: .
+    container_name: wallet-app
+    depends_on:
+      - database-wallet
+    ports:
+      - 3001:3001
+    env_file:
+      - ./.env
+    networks:
+      - ilia-network
+
+  database-wallet:
+    image: postgres
+    container_name: database-wallet
+    ports:
+      - 5432:5432
+    env_file:
+      - ./.env
+    volumes:
+      - pgdata:/data/postgres
+    networks:
+      - ilia-network
+
+volumes:
+  pgdata:
+    driver: local
+
+networks: 
+  ilia-network:
+    driver: bridge
