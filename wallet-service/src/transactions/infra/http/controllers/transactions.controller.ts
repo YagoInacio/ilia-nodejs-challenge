@@ -6,14 +6,19 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
+import { TransactionType } from '@transactions/entities/transaction';
 import { CreateTransaction } from '@transactions/useCases/createTransaction.service';
+import { ListTransactions } from '@transactions/useCases/listTransactions.service';
+import { GetBalance } from '@transactions/useCases/getBalance.service';
 import { CreateTransactionBody } from '../dtos/createTransactionBody';
 import {
   TransactionViewModel,
   TransactionViewModelSchema,
 } from '../viewModels/transactionViewModel';
-import { ListTransactions } from '@transactions/useCases/listTransactions.service';
-import { TransactionType } from '@transactions/entities/transaction';
+import {
+  BalanceViewModel,
+  BalanceViewModelSchema,
+} from '../viewModels/balanceViewModel';
 
 @Controller('transactions')
 @ApiTags('Transactions')
@@ -21,6 +26,7 @@ export class TransactionsController {
   constructor(
     private createTransaction: CreateTransaction,
     private listTransactions: ListTransactions,
+    private getBalance: GetBalance,
   ) {}
 
   @Post()
@@ -65,5 +71,22 @@ export class TransactionsController {
     });
 
     return transactions.map(TransactionViewModel.toHTTP);
+  }
+
+  @Get('balance')
+  @ApiOkResponse({
+    description: 'OK',
+    type: BalanceViewModelSchema,
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Access token is missing or invalid',
+  })
+  @ApiQuery({ name: 'userId', required: false })
+  async balance(@Query('userId') userId: string) {
+    // TODO: get userId from token
+    const balance = await this.getBalance.execute({ userId });
+
+    return BalanceViewModel.toHTTP(balance);
   }
 }

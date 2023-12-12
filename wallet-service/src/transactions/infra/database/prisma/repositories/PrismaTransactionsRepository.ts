@@ -36,7 +36,19 @@ export class PrismaTransactionsRepository implements TransactionsRepository {
   }
 
   async getBalance(userId?: string): Promise<number> {
-    throw new Error('Method not implemented.');
+    const query = userId
+      ? this.prisma.$queryRaw`
+        SELECT SUM(CASE WHEN type = 'CREDIT' THEN amount ELSE -amount END) AS balance FROM transactions
+        WHERE user_id = ${userId};
+      `
+      : this.prisma.$queryRaw`
+        SELECT SUM(CASE WHEN type = 'CREDIT' THEN amount ELSE -amount END) AS balance FROM transactions;
+      `;
+    const queryResult = await query;
+
+    const balance: bigint = queryResult[0].balance || BigInt(0);
+
+    return Number(balance);
   }
 
   async create(transaction: Transaction): Promise<void> {
