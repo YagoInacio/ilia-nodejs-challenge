@@ -1,5 +1,6 @@
 import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import {
+  ApiBearerAuth,
   ApiCreatedResponse,
   ApiOkResponse,
   ApiQuery,
@@ -22,6 +23,7 @@ import {
 
 @Controller('transactions')
 @ApiTags('Transactions')
+@ApiBearerAuth()
 export class TransactionsController {
   constructor(
     private createTransaction: CreateTransaction,
