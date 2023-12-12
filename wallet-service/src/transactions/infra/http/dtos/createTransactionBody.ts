@@ -6,21 +6,21 @@ export class CreateTransactionBody {
   @IsNotEmpty()
   @ApiProperty({
     example: '35763058-1344-4d8c-aebd-eace40083345',
-    description: 'Id do usuário',
+    description: `User's id`,
   })
   user_id: string;
 
   @IsNotEmpty()
   @ApiProperty({
     example: 4700,
-    description: 'Valor da transação em centavos',
+    description: 'Transaction value in cents',
   })
   amount: number;
 
   @IsNotEmpty()
   @ApiProperty({
     example: 'CREDIT',
-    description: 'Id do usuário',
+    description: 'Transaction type',
     enum: TransactionType,
   })
   type: TransactionType;

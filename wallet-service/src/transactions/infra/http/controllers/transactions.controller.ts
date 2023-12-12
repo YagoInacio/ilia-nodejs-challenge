@@ -1,5 +1,6 @@
-import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, Req } from '@nestjs/common';
 import {
+  ApiBearerAuth,
   ApiCreatedResponse,
   ApiOkResponse,
   ApiQuery,
@@ -22,6 +23,7 @@ import {
 
 @Controller('transactions')
 @ApiTags('Transactions')
+@ApiBearerAuth()
 export class TransactionsController {
   constructor(
     private createTransaction: CreateTransaction,
@@ -54,7 +56,6 @@ export class TransactionsController {
 
   @Get()
   @ApiQuery({ name: 'type', enum: TransactionType, required: false })
-  @ApiQuery({ name: 'userId', required: false })
   @ApiOkResponse({
     description: 'OK',
     type: [TransactionViewModelSchema],
@@ -63,8 +64,9 @@ export class TransactionsController {
     status: 401,
     description: 'Access token is missing or invalid',
   })
-  async list(@Query('type') type: string, @Query('userId') userId: string) {
-    // TODO: get userId from token
+  async list(@Query('type') type: string, @Req() request) {
+    const { user_id: userId } = request.user;
+
     const { transactions } = await this.listTransactions.execute({
       userId,
       type: type as TransactionType,
@@ -82,9 +84,9 @@ export class TransactionsController {
     status: 401,
     description: 'Access token is missing or invalid',
   })
-  @ApiQuery({ name: 'userId', required: false })
-  async balance(@Query('userId') userId: string) {
-    // TODO: get userId from token
+  async balance(@Req() request) {
+    const { user_id: userId } = request.user;
+
     const balance = await this.getBalance.execute({ userId });
 
     return BalanceViewModel.toHTTP(balance);
