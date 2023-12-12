@@ -1,3 +1,4 @@
+import { AppError } from '@errors/appError.exception';
 import { Injectable } from '@nestjs/common';
 import {
   ListTransactionsInputDTO,
@@ -20,8 +21,7 @@ export class ListTransactions {
       type !== TransactionType.CREDIT &&
       type !== TransactionType.DEBIT
     ) {
-      // TODO: exception handling
-      throw new Error('Invalid Type');
+      throw new AppError('Invalid Type');
     }
     const transactions = await this.transactionsRepository.listAll({
       userId,

@@ -1,5 +1,6 @@
 import { randomUUID } from 'node:crypto';
 import { Replace } from '@helpers/Replace';
+import { AppError } from '@errors/appError.exception';
 
 export enum TransactionType {
   CREDIT = 'CREDIT',
@@ -49,7 +50,7 @@ export class Transaction {
     const isValid = this.validateAmount(value);
 
     if (!isValid) {
-      throw new Error('Amount not valid: must be integer');
+      throw new AppError('Amount not valid: must be integer');
     }
 
     this.props.amount = value;
@@ -64,7 +65,7 @@ export class Transaction {
     const isValid = this.validateTransactionType(value);
 
     if (!isValid) {
-      throw new Error('Transaction type not valid');
+      throw new AppError('Transaction type not valid');
     }
 
     this.props.type = value;
@@ -102,13 +103,13 @@ export class Transaction {
     const typeIsValid = this.validateTransactionType(type);
 
     if (!typeIsValid) {
-      throw new Error('Transaction type not valid');
+      throw new AppError('Transaction type not valid');
     }
 
     const amountIsValid = this.validateAmount(amount);
 
     if (!amountIsValid) {
-      throw new Error('Amount not valid: must be integer');
+      throw new AppError('Amount not valid: must be integer');
     }
   }
 }
