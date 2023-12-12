@@ -1,16 +1,27 @@
-import { Body, Controller, Post } from '@nestjs/common';
-import { ApiCreatedResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Get, Post, Query } from '@nestjs/common';
+import {
+  ApiCreatedResponse,
+  ApiOkResponse,
+  ApiQuery,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
 import { CreateTransaction } from '@transactions/useCases/createTransaction.service';
 import { CreateTransactionBody } from '../dtos/createTransactionBody';
 import {
   TransactionViewModel,
   TransactionViewModelSchema,
 } from '../viewModels/transactionViewModel';
+import { ListTransactions } from '@transactions/useCases/listTransactions.service';
+import { TransactionType } from '@transactions/entities/transaction';
 
 @Controller('transactions')
 @ApiTags('Transactions')
 export class TransactionsController {
-  constructor(private createTransaction: CreateTransaction) {}
+  constructor(
+    private createTransaction: CreateTransaction,
+    private listTransactions: ListTransactions,
+  ) {}
 
   @Post()
   @ApiCreatedResponse({
@@ -33,5 +44,25 @@ export class TransactionsController {
     });
 
     return TransactionViewModel.toHTTP(transaction);
+  }
+
+  @Get()
+  @ApiQuery({ name: 'type', enum: TransactionType })
+  @ApiOkResponse({
+    description: 'OK',
+    type: [TransactionViewModelSchema],
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Access token is missing or invalid',
+  })
+  async list(@Query('type') type: string, @Query('userId') userId: string) {
+    // TODO: get userId from token
+    const { transactions } = await this.listTransactions.execute({
+      userId,
+      type: type as TransactionType,
+    });
+
+    return transactions.map(TransactionViewModel.toHTTP);
   }
 }

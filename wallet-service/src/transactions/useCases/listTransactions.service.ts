@@ -3,6 +3,7 @@ import {
   ListTransactionsInputDTO,
   ListTransactionsOutputDTO,
 } from '@transactions/dtos/listTransactionsDTOs';
+import { TransactionType } from '@transactions/entities/transaction';
 import { TransactionsRepository } from '@transactions/repositories/TransactionsRepository';
 
 @Injectable()
@@ -14,6 +15,14 @@ export class ListTransactions {
   ): Promise<ListTransactionsOutputDTO> {
     const { userId, type } = input;
 
+    if (
+      type &&
+      type !== TransactionType.CREDIT &&
+      type !== TransactionType.DEBIT
+    ) {
+      // TODO: exception handling
+      throw new Error('Invalid Type');
+    }
     const transactions = await this.transactionsRepository.listByUserId(
       userId,
       type,

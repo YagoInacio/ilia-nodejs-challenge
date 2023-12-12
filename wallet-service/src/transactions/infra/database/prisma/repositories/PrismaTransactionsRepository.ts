@@ -23,7 +23,14 @@ export class PrismaTransactionsRepository implements TransactionsRepository {
     userId: string,
     type?: TransactionType,
   ): Promise<Transaction[]> {
-    throw new Error('Method not implemented.');
+    const transactions = await this.prisma.transaction.findMany({
+      where: {
+        userId,
+        type,
+      },
+    });
+
+    return transactions.map(PrismaTransactionMapper.toDomain);
   }
 
   async getBalance(userId?: string): Promise<number> {
