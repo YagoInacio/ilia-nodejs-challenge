@@ -7,16 +7,6 @@ import { TransactionsRepository } from '@transactions/repositories/TransactionsR
 export class InMemoryTransactionsRepository implements TransactionsRepository {
   public transactions: Transaction[] = [];
 
-  async findById(id: string): Promise<Transaction | null> {
-    const transaction = this.transactions.find((item) => item.id === id);
-
-    if (!transaction) {
-      return null;
-    }
-
-    return transaction;
-  }
-
   async listAll(filters: {
     userId?: string;
     type?: TransactionType;
@@ -53,15 +43,5 @@ export class InMemoryTransactionsRepository implements TransactionsRepository {
 
   async create(transaction: Transaction): Promise<void> {
     this.transactions.push(transaction);
-  }
-
-  async save(transaction: Transaction): Promise<void> {
-    const transactionIndex = this.transactions.findIndex(
-      (item) => item.id === transaction.id,
-    );
-
-    if (transactionIndex >= 0) {
-      this.transactions[transactionIndex] = transaction;
-    }
   }
 }

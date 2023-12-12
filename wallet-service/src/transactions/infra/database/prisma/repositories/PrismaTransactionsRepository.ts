@@ -11,10 +11,6 @@ import { PrismaTransactionMapper } from '../mappers/PrismaTransactionMapper';
 export class PrismaTransactionsRepository implements TransactionsRepository {
   constructor(private prisma: PrismaService) {}
 
-  async findById(id: string): Promise<Transaction> {
-    throw new Error('Method not implemented.');
-  }
-
   async listAll(filters: {
     userId?: string;
     type?: TransactionType;
@@ -57,9 +53,5 @@ export class PrismaTransactionsRepository implements TransactionsRepository {
     await this.prisma.transaction.create({
       data: mapped,
     });
-  }
-
-  async save(transaction: Transaction): Promise<void> {
-    throw new Error('Method not implemented.');
   }
 }
