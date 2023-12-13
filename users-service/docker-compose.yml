@@ -1,6 +1,18 @@
 version: "3.9"
 
 services:
+  users-app:
+    build: .
+    container_name: users-app
+    depends_on:
+      - database-users
+    ports:
+      - 3002:3002
+    env_file:
+      - ./.env
+    networks:
+      - ilia-network
+
   database-users:
     image: bitnami/mongodb:5.0.17
     volumes:
