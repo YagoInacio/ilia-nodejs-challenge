@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  UseFilters,
 } from '@nestjs/common';
 import {
   ApiBearerAuth,
@@ -27,9 +28,11 @@ import { UpdateUserBody } from '../dtos/updateUserBody';
 import { UpdateUser } from '@users/useCases/updateUser.service';
 import { DeleteUser } from '@users/useCases/deleteUser.service';
 import { Public } from '@infra/http/decorators/publicRoute.decorator';
+import { GlobalExceptionFilter } from '@errors/globalException.filter';
 
 @Controller('users')
 @ApiTags('Users')
+@UseFilters(GlobalExceptionFilter)
 export class UsersController {
   constructor(
     private createUser: CreateUser,
