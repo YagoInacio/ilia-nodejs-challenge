@@ -8,11 +8,11 @@ import { Injectable } from '@nestjs/common';
 export class PrismaUsersRepository implements UsersRepository {
   constructor(private prisma: PrismaService) {}
 
-  // TODO: filter deactivated users
   async findById(id: string): Promise<User | null> {
     const user = await this.prisma.user.findUnique({
       where: {
         id,
+        active: true,
       },
     });
 
@@ -23,11 +23,11 @@ export class PrismaUsersRepository implements UsersRepository {
     return PrismaUserMapper.toDomain(user);
   }
 
-  // TODO: filter deactivated users
   async findByEmail(email: string): Promise<User | null> {
     const user = await this.prisma.user.findUnique({
       where: {
         email,
+        active: true,
       },
     });
 
@@ -38,9 +38,12 @@ export class PrismaUsersRepository implements UsersRepository {
     return PrismaUserMapper.toDomain(user);
   }
 
-  // TODO: filter deactivated users
   async listAll(): Promise<User[]> {
-    const users = await this.prisma.user.findMany();
+    const users = await this.prisma.user.findMany({
+      where: {
+        active: true,
+      },
+    });
 
     return users.map(PrismaUserMapper.toDomain);
   }
