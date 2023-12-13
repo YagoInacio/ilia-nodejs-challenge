@@ -1,7 +1,8 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import {
   ApiCreatedResponse,
   ApiOkResponse,
+  ApiParam,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
@@ -12,11 +13,16 @@ import {
   UserViewModelSchema,
 } from '../viewModels/UserViewModel';
 import { ListUsers } from '@users/useCases/listUsers.service';
+import { GetUser } from '@users/useCases/getUser.service';
 
 @Controller('users')
 @ApiTags('Users')
 export class UsersController {
-  constructor(private createUser: CreateUser, private listUsers: ListUsers) {}
+  constructor(
+    private createUser: CreateUser,
+    private listUsers: ListUsers,
+    private getUser: GetUser,
+  ) {}
 
   @Post()
   @ApiCreatedResponse({
@@ -58,5 +64,29 @@ export class UsersController {
     const { users } = await this.listUsers.execute();
 
     return users.map(UserViewModel.toHTTP);
+  }
+
+  @Get(':id')
+  @ApiOkResponse({
+    description: 'OK',
+    type: UserViewModelSchema,
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Access token is missing or invalid',
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'User not found',
+  })
+  @ApiParam({
+    name: 'id',
+    description: 'Id of the user to be returned',
+    required: true,
+  })
+  async find(@Param('id') id: string) {
+    const { user } = await this.getUser.execute({ id });
+
+    return UserViewModel.toHTTP(user);
   }
 }
