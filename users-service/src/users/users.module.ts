@@ -6,10 +6,19 @@ import { ListUsers } from './useCases/listUsers.service';
 import { GetUser } from './useCases/getUser.service';
 import { UpdateUser } from './useCases/updateUser.service';
 import { DeleteUser } from './useCases/deleteUser.service';
+import { JwtModule } from '@nestjs/jwt';
+import { AuthUser } from './useCases/authUser.service';
+import { AuthController } from './infra/http/controllers/auth.controller';
 
 @Module({
-  imports: [],
-  controllers: [UsersController],
+  imports: [
+    JwtModule.register({
+      global: true,
+      secret: process.env.JWT_PRIVATE_KEY,
+      signOptions: { expiresIn: '60s' },
+    }),
+  ],
+  controllers: [UsersController, AuthController],
   providers: [
     ValidatePassword,
     CreateUser,
@@ -17,6 +26,7 @@ import { DeleteUser } from './useCases/deleteUser.service';
     GetUser,
     UpdateUser,
     DeleteUser,
+    AuthUser,
   ],
 })
 export class UsersModule {}

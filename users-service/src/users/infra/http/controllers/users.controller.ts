@@ -8,6 +8,7 @@ import {
   Post,
 } from '@nestjs/common';
 import {
+  ApiBearerAuth,
   ApiCreatedResponse,
   ApiOkResponse,
   ApiParam,
@@ -25,6 +26,7 @@ import { GetUser } from '@users/useCases/getUser.service';
 import { UpdateUserBody } from '../dtos/updateUserBody';
 import { UpdateUser } from '@users/useCases/updateUser.service';
 import { DeleteUser } from '@users/useCases/deleteUser.service';
+import { Public } from '@infra/http/decorators/publicRoute.decorator';
 
 @Controller('users')
 @ApiTags('Users')
@@ -46,6 +48,7 @@ export class UsersController {
     status: 400,
     description: 'Failed to create: user exists or invalid password',
   })
+  @Public()
   async create(@Body() body: CreateUserBody) {
     const {
       first_name: firstName,
@@ -73,6 +76,7 @@ export class UsersController {
     status: 401,
     description: 'Access token is missing or invalid',
   })
+  @ApiBearerAuth()
   async list() {
     const { users } = await this.listUsers.execute();
 
@@ -97,6 +101,7 @@ export class UsersController {
     description: 'Id of the user to be returned',
     required: true,
   })
+  @ApiBearerAuth()
   async find(@Param('id') id: string) {
     const { user } = await this.getUser.execute({ id });
 
@@ -125,6 +130,7 @@ export class UsersController {
     description: 'Id of the user to be updated',
     required: true,
   })
+  @ApiBearerAuth()
   async update(@Param('id') id: string, @Body() body: UpdateUserBody) {
     const {
       first_name: firstName,
@@ -161,6 +167,7 @@ export class UsersController {
     description: 'Id of the user to be deleted',
     required: true,
   })
+  @ApiBearerAuth()
   async delete(@Param('id') id: string) {
     await this.deleteUser.execute({ id });
   }
