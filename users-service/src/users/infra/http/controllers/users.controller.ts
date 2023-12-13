@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
 import {
   ApiCreatedResponse,
   ApiOkResponse,
@@ -14,6 +14,8 @@ import {
 } from '../viewModels/UserViewModel';
 import { ListUsers } from '@users/useCases/listUsers.service';
 import { GetUser } from '@users/useCases/getUser.service';
+import { UpdateUserBody } from '../dtos/updateUserBody';
+import { UpdateUser } from '@users/useCases/updateUser.service';
 
 @Controller('users')
 @ApiTags('Users')
@@ -22,6 +24,7 @@ export class UsersController {
     private createUser: CreateUser,
     private listUsers: ListUsers,
     private getUser: GetUser,
+    private updateUser: UpdateUser,
   ) {}
 
   @Post()
@@ -86,6 +89,47 @@ export class UsersController {
   })
   async find(@Param('id') id: string) {
     const { user } = await this.getUser.execute({ id });
+
+    return UserViewModel.toHTTP(user);
+  }
+
+  @Patch(':id')
+  @ApiOkResponse({
+    description: 'OK',
+    type: UserViewModelSchema,
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Access token is missing or invalid',
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'User not found',
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Could not update: invalid email or password',
+  })
+  @ApiParam({
+    name: 'id',
+    description: 'Id of the user to be updated',
+    required: true,
+  })
+  async update(@Param('id') id: string, @Body() body: UpdateUserBody) {
+    const {
+      first_name: firstName,
+      last_name: lastName,
+      email,
+      password,
+    } = body;
+
+    const { user } = await this.updateUser.execute({
+      id,
+      firstName,
+      lastName,
+      email,
+      password,
+    });
 
     return UserViewModel.toHTTP(user);
   }

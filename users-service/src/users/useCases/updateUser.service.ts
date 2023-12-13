@@ -47,6 +47,7 @@ export class UpdateUser {
 
     await this.usersRepository.save(user);
 
+    // Normally, if email was changed, it would notify the email microservice to resend a confirmation email here.
     return { user };
   }
 }
