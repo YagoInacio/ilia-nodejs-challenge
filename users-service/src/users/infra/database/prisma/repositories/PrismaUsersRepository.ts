@@ -8,6 +8,7 @@ import { Injectable } from '@nestjs/common';
 export class PrismaUsersRepository implements UsersRepository {
   constructor(private prisma: PrismaService) {}
 
+  // TODO: filter deactivated users
   async findById(id: string): Promise<User | null> {
     const user = await this.prisma.user.findUnique({
       where: {
@@ -22,6 +23,7 @@ export class PrismaUsersRepository implements UsersRepository {
     return PrismaUserMapper.toDomain(user);
   }
 
+  // TODO: filter deactivated users
   async findByEmail(email: string): Promise<User | null> {
     const user = await this.prisma.user.findUnique({
       where: {
@@ -36,6 +38,7 @@ export class PrismaUsersRepository implements UsersRepository {
     return PrismaUserMapper.toDomain(user);
   }
 
+  // TODO: filter deactivated users
   async listAll(): Promise<User[]> {
     const users = await this.prisma.user.findMany();
 
@@ -63,10 +66,24 @@ export class PrismaUsersRepository implements UsersRepository {
   }
 
   async confirm(id: string): Promise<void> {
-    throw new Error('Method not implemented.');
+    await this.prisma.user.update({
+      where: {
+        id,
+      },
+      data: {
+        confirmed: true,
+      },
+    });
   }
 
   async deactivate(id: string): Promise<void> {
-    throw new Error('Method not implemented.');
+    await this.prisma.user.update({
+      where: {
+        id,
+      },
+      data: {
+        active: false,
+      },
+    });
   }
 }

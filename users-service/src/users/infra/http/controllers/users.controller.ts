@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import {
   ApiCreatedResponse,
   ApiOkResponse,
@@ -16,6 +24,7 @@ import { ListUsers } from '@users/useCases/listUsers.service';
 import { GetUser } from '@users/useCases/getUser.service';
 import { UpdateUserBody } from '../dtos/updateUserBody';
 import { UpdateUser } from '@users/useCases/updateUser.service';
+import { DeleteUser } from '@users/useCases/deleteUser.service';
 
 @Controller('users')
 @ApiTags('Users')
@@ -25,6 +34,7 @@ export class UsersController {
     private listUsers: ListUsers,
     private getUser: GetUser,
     private updateUser: UpdateUser,
+    private deleteUser: DeleteUser,
   ) {}
 
   @Post()
@@ -132,5 +142,26 @@ export class UsersController {
     });
 
     return UserViewModel.toHTTP(user);
+  }
+
+  @Delete(':id')
+  @ApiOkResponse({
+    description: 'Deleted',
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Access token is missing or invalid',
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'User not found',
+  })
+  @ApiParam({
+    name: 'id',
+    description: 'Id of the user to be deleted',
+    required: true,
+  })
+  async delete(@Param('id') id: string) {
+    await this.deleteUser.execute({ id });
   }
 }
