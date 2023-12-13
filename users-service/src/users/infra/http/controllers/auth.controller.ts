@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, HttpCode, Post } from '@nestjs/common';
 import { ApiOkResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthUser } from '@users/useCases/authUser.service';
 import { AuthUserBody } from '../dtos/authUserBody';
@@ -21,6 +21,7 @@ export class AuthController {
     status: 401,
     description: 'Invalid email/password',
   })
+  @HttpCode(200)
   async auth(@Body() body: AuthUserBody) {
     const {
       user: { email, password },
