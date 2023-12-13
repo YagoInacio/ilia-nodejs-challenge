@@ -6,6 +6,7 @@ import {
   AuthUserViewModel,
   AuthUserViewModelSchema,
 } from '../viewModels/AuthUserViewModel';
+import { Public } from '@infra/http/decorators/publicRoute.decorator';
 
 @Controller('auth')
 @ApiTags('Auth')
@@ -21,6 +22,7 @@ export class AuthController {
     status: 401,
     description: 'Invalid email/password',
   })
+  @Public()
   @HttpCode(200)
   async auth(@Body() body: AuthUserBody) {
     const {
