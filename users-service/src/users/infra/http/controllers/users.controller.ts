@@ -27,7 +27,7 @@ import { GetUser } from '@users/useCases/getUser.service';
 import { UpdateUserBody } from '../dtos/updateUserBody';
 import { UpdateUser } from '@users/useCases/updateUser.service';
 import { DeleteUser } from '@users/useCases/deleteUser.service';
-import { Public } from '@infra/http/decorators/publicRoute.decorator';
+import { Public } from '@infra/api/decorators/publicRoute.decorator';
 import { GlobalExceptionFilter } from '@errors/globalException.filter';
 
 @Controller('users')

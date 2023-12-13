@@ -6,7 +6,7 @@ import {
   AuthUserViewModel,
   AuthUserViewModelSchema,
 } from '../viewModels/AuthUserViewModel';
-import { Public } from '@infra/http/decorators/publicRoute.decorator';
+import { Public } from '@infra/api/decorators/publicRoute.decorator';
 import { GlobalExceptionFilter } from '@errors/globalException.filter';
 
 @Controller('auth')
