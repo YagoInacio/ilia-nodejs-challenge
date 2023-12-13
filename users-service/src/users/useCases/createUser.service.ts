@@ -25,13 +25,19 @@ export class CreateUser {
       password: rawPassword,
     } = input;
 
+    const userExists = await this.usersRepository.findByEmail(rawEmail);
+
+    if (userExists) {
+      throw new AppError('User already exists');
+    }
+
+    const email = new Email(rawEmail);
+
     if (!this.validatePassword.execute(rawPassword)) {
       throw new AppError('Invalid password');
     }
 
     const password = await bcrypt.hash(rawPassword, 10);
-
-    const email = new Email(rawEmail);
 
     const user = new User({
       firstName,

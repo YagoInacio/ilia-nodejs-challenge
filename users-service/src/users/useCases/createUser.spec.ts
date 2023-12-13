@@ -41,4 +41,22 @@ describe('Create User', () => {
       });
     }).rejects.toBeInstanceOf(AppError);
   });
+
+  it('should not be able to create a user with existing email', async () => {
+    await createUser.execute({
+      firstName: 'Thomas',
+      lastName: 'Anderson',
+      email: 'foo@bar.com',
+      password: 'beBQc5#ZC@!!',
+    });
+
+    expect(async () => {
+      return createUser.execute({
+        firstName: 'Thomas',
+        lastName: 'Anderson',
+        email: 'foo@bar.com',
+        password: 'beBQc5#ZC@!!',
+      });
+    }).rejects.toBeInstanceOf(AppError);
+  });
 });

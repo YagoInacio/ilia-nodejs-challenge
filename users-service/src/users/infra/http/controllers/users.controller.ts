@@ -23,6 +23,10 @@ export class UsersController {
     description: 'User created',
     type: UserViewModelSchema,
   })
+  @ApiResponse({
+    status: 400,
+    description: 'Failed to create: user exists or invalid password',
+  })
   async create(@Body() body: CreateUserBody) {
     const {
       first_name: firstName,

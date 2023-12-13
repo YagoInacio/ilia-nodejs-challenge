@@ -14,7 +14,7 @@ model User {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   firstName String   @map("first_name")
   lastName  String   @map("last_name")
-  email     String
+  email     String   @unique
   password  String
   confirmed Boolean
   active    Boolean
