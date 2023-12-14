@@ -1,47 +1,62 @@
-# ília - Code Challenge NodeJS
-**English**
-##### Before we start ⚠️
-**Please create a fork from this repository**
+<p align="center">
+  <img alt="GitHub language count" src="https://img.shields.io/github/languages/count/yagoinacio/ilia-nodejs-challenge?color=353949">
 
-## The Challenge:
-One of the ília Digital verticals is Financial and to level your knowledge we will do a Basic Financial Application and for that we divided this Challenge in 2 Parts.
+  <img alt="Repository size" src="https://img.shields.io/github/repo-size/yagoinacio/ilia-nodejs-challenge">
 
-The first part is mandatory, which is to create a Wallet microservice to store the users' transactions, the second part is optional (*for Seniors, it's mandatory*) which is to create a Users Microservice with integration between the two microservices (Wallet and Users), using internal communications between them, that can be done in any of the following strategies: gRPC, REST, Kafka or via Messaging Queues and this communication must have a different security of the external application (JWT, SSL, ...), **Development in javascript (Node) is required.**
+  <a href="https://github.com/yagoinacio/ilia-nodejs-challenge/commits/main">
+    <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/yagoinacio/ilia-nodejs-challenge">
+  </a>
 
-![diagram](diagram.png)
+  <a href="https://yagofaran.dev">
+    <img alt="Made by Yago Faran" src="https://img.shields.io/badge/made_by-Yago_Faran-353949">
+  </a>
+</p>
 
-### General Instructions:
-## Part 1 - Wallet Microservice
+<h1 align="center">
+    <img alt="Logo Yago Faran" title="#YagoFaran" src="https://portfolio.yagofaran.dev/api/images/logo.svg" />
+</h1>
 
-This microservice must be a digital Wallet where the user transactions will be stored 
+<p align="center">
+ <a href="#-ilia-nodejs-challenge">About</a> •
+ <a href="#-tech-stack">Tech Stack</a> • 
+ <a href="#-features">Features</a> •
+ <a href="#-author">Author</a>
+</p>
 
-### The Application must have
+## 💻 Ília NodeJS Challenge
 
-    - Project setup documentation (readme.md).
-    - Application and Database running on a container (Docker, ...).
-    - This Microservice must receive HTTP Request.
-    - Have a dedicated database (Postgres, MySQL, Mongo, DynamoDB, ...).
-    - JWT authentication on all routes (endpoints) the PrivateKey must be ILIACHALLENGE (passed by env var).
-    - Configure the Microservice port to 3001. 
-    - Gitflow applied with Code Review in each step, open a feature/branch, create at least one pull request and merge it with Main(master deprecated), this step is important to simulate a team work and not just a commit.
+This repository contains the solution to the Ília NodeJS Challenge ([description](./description.md)). In summary, the goal was to develop two microservices: one to act as a wallet and handle users' financial transactions, and the other to handle user registration. On each microservice folder, you will find instructions on setting up the necessary environments to run both services. Here you can find the two requested microservices: [wallet-microservice](./wallet-service/README.md) and [users-microservice](./users-service/README.md).
 
-## Part 2 - Microservice Users and Wallet Integration
+## 🛠 Tech Stack
 
-### The Application must have:
+-   **[NestJS](https://nestjs.com)**
+-   **[PostgreSQL](https://www.postgresql.org)**
+-   **[MongoDB](https://www.mongodb.com)**
+-   **[Prisma](https://www.prisma.io)**
+-   **[gRPC](https://grpc.io)**
+-   **[JestJS](https://jestjs.io)**
 
-    - Project setup documentation (readme.md).
-    - Application and Database running on a container (Docker, ...).
-    - This Microservice must receive HTTP Request.   
-    - Have a dedicated database(Postgres, MySQL, Mongo, DynamoDB...), you may use an Auth service like AWS Cognito.
-    - JWT authentication on all routes (endpoints) the PrivateKey must be ILIACHALLENGE (passed by env var).
-    - Set the Microservice port to 3002. 
-    - Gitflow applied with Code Review in each step, open a feature/branch, create at least one pull request and merge it with Main(master deprecated), this step is important to simulate a teamwork and not just a commit.
-    - Internal Communication Security (JWT, SSL, ...), if it is JWT the PrivateKey must be ILIACHALLENGE_INTERNAL (passed by env var).
-    - Communication between Microservices using any of the following: gRPC, REST, Kafka or via Messaging Queues (update your readme with the instructions to run if using a Docker/Container environment).
+## ✨ Features
 
-#### In the end, send us your fork repo updated. As soon as you finish, please let us know.
+- [x] wallet-microservice
+- [x] users-microservice
+- [x] containerized databases and applications
+- [x] OpenAPI documentation
+- [x] Unit testing
+- [x] JWT authentication
+- [x] Internal services communication
 
-#### We are available to answer any questions.
+## 🦸 Author
+
+<a href="https://yagofaran.dev">
+ <img style="border-radius: 50%;" src="https://avatars.githubusercontent.com/yagoinacio" width="100px;" alt=""/>
+ <br />
+ <sub><b>Yago Faran 💧</b></sub>
+</a>
+
+[![Github Badge](https://img.shields.io/badge/-YagoInacio-gray?style=flat-square&labelColor=gray&logo=github&logoColor=white&link=https://github.com/yagoinacio)](https://github.com/yagoinacio)
+[![Linkedin Badge](https://img.shields.io/badge/-Yago-blue?style=flat-square&logo=Linkedin&logoColor=white&link=https://www.linkedin.com/in/yagoinacio/)](https://www.linkedin.com/in/yagoinacio/) 
+[![Gmail Badge](https://img.shields.io/badge/-yagofaran@gmail.com-c14438?style=flat-square&logo=Gmail&logoColor=white&link=mailto:yagofaran@gmail.com)](mailto:yagofaran@gmail.com)
 
 
-Happy coding! 🤓
+Made with ❤️ by Yago Faran 👋🏽 [Get in touch!](https://www.linkedin.com/in/yagoinacio/)
