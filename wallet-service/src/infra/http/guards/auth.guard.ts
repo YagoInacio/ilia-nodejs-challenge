@@ -6,10 +6,11 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Request } from 'express';
+import { FindUser } from '@infra/grpc/services/findUser.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-  constructor(private jwtService: JwtService) {}
+  constructor(private jwtService: JwtService, private findUser: FindUser) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
@@ -25,6 +26,12 @@ export class AuthGuard implements CanActivate {
       });
 
       request['user'] = payload;
+
+      if (payload.user_id) {
+        const user = await this.findUser.execute({ id: payload.user_id });
+
+        request['user'] = user;
+      }
     } catch {
       throw new UnauthorizedException('Access token is missing or invalid');
     }

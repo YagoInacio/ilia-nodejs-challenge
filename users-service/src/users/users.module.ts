@@ -9,6 +9,7 @@ import { DeleteUser } from './useCases/deleteUser.service';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthUser } from './useCases/authUser.service';
 import { AuthController } from './infra/http/controllers/auth.controller';
+import { GrpcUsersController } from './infra/grpc/controllers/users.controller';
 
 @Module({
   imports: [
@@ -18,7 +19,7 @@ import { AuthController } from './infra/http/controllers/auth.controller';
       signOptions: { expiresIn: '60s' },
     }),
   ],
-  controllers: [UsersController, AuthController],
+  controllers: [UsersController, AuthController, GrpcUsersController],
   providers: [
     ValidatePassword,
     CreateUser,

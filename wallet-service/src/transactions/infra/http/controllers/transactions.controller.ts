@@ -65,7 +65,7 @@ export class TransactionsController {
     description: 'Access token is missing or invalid',
   })
   async list(@Query('type') type: string, @Req() request) {
-    const { user_id: userId } = request.user;
+    const { id: userId } = request.user;
 
     const { transactions } = await this.listTransactions.execute({
       userId,
@@ -85,7 +85,7 @@ export class TransactionsController {
     description: 'Access token is missing or invalid',
   })
   async balance(@Req() request) {
-    const { user_id: userId } = request.user;
+    const { id: userId } = request.user;
 
     const balance = await this.getBalance.execute({ userId });
 
