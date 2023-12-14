@@ -1,34 +1,16 @@
-import { UserService } from '@infra/grpc/services/UserService';
 import {
   CanActivate,
   ExecutionContext,
   Injectable,
-  OnModuleInit,
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { Client, ClientGrpc, Transport } from '@nestjs/microservices';
 import { Request } from 'express';
-import { join } from 'path';
-import { firstValueFrom } from 'rxjs';
+import { FindUser } from '@infra/grpc/services/findUser.service';
 
 @Injectable()
-export class AuthGuard implements CanActivate, OnModuleInit {
-  @Client({
-    transport: Transport.GRPC,
-    options: {
-      package: 'user',
-      protoPath: join(__dirname, '..', '..', 'grpc/proto/user.proto'),
-    },
-  })
-  grpcClient: ClientGrpc;
-  private userService: UserService;
-
-  constructor(private jwtService: JwtService) {}
-
-  onModuleInit() {
-    this.userService = this.grpcClient.getService<UserService>('UserService');
-  }
+export class AuthGuard implements CanActivate {
+  constructor(private jwtService: JwtService, private findUser: FindUser) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
@@ -46,11 +28,7 @@ export class AuthGuard implements CanActivate, OnModuleInit {
       request['user'] = payload;
 
       if (payload.user_id) {
-        const user = await firstValueFrom(
-          this.userService.findUser({
-            id: payload.user_id,
-          }),
-        );
+        const user = await this.findUser.execute({ id: payload.user_id });
 
         request['user'] = user;
       }
