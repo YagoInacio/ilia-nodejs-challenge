@@ -5,10 +5,12 @@ import { DatabaseModule } from './infra/database/database.module';
 import { HttpModule } from '@infra/http/http.module';
 import { GlobalExceptionFilter } from '@errors/globalException.filter';
 import { AuthGuard } from '@infra/http/guards/auth.guard';
+import { GrpcModule } from '@infra/grpc/grpc.module';
 
 @Module({
   imports: [
     HttpModule,
+    GrpcModule,
     DatabaseModule,
     JwtModule.register({
       global: true,
