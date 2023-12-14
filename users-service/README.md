@@ -90,8 +90,9 @@ DATABASE_URL="mongodb://${MONGODB_ROOT_USERNAME}:${MONGODB_ROOT_PASSWORD}@${MONG
 PORT=3002
 
 JWT_PRIVATE_KEY=[PRIVATE_KEY]
+JWT_INTERNAL_PRIVATE_KEY=[INTERNAL_PRIVATE_KEY]
 
-#  make sure to replace [USERNAME], [PASSWORD], [HOST], [DATABASE] and [PRIVATE_KEY] with actual values
+#  make sure to replace [USERNAME], [PASSWORD], [HOST], [DATABASE], [PRIVATE_KEY] and [INTERNAL_PRIVATE_KEY] with actual values
 ```
 
 You can run a containerized instance of the Database by running ```docker compose up database-users -d```.
